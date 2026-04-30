@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="CSS/login.css"> 
+    
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="Form login-form">
+            <h2>Login</h2>
+            <form action="/login" id="loginForm" method="POST">
+                <div class="input-box">
+                    <i class='bx bxs-user'></i>
+                    <label for="username">Name</label>
+                    <input type="text" name="name" id="username" placeholder="Enter Your Username*" required>
+                </div>
+                <div class="input-box">
+                    <i class='bx bxs-envelope'></i>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter Your Password*" required>
+                </div>
+                <button class="btn" id="loginBtn" type="submit">Login</button>
+            </form>
+
+            <p class="RegisteBtn RegiBtn"><a href="/signup">Register Now</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.querySelector(".container");
+            const loginForm = document.querySelector('.login-form');
+            const RegisterForm = document.querySelector('.Register-form');
+            const RegiBtn = document.querySelector('.RegiBtn');
+            const LoginBtn = document.querySelector('.LoginBtn');
+    
+            // Check if the buttons and forms exist before adding event listeners
+            if (RegiBtn && LoginBtn && RegisterForm && loginForm) {
+                RegiBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    RegisterForm.classList.add('active');
+                    loginForm.classList.add('active');
+                });
+    
+                LoginBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    RegisterForm.classList.remove('active');
+                    loginForm.classList.remove('active');
+                });
+            } else {
+                console.warn("Missing toggle elements. Check class names or DOM structure.");
+            }
+    
+            // Login form submission logic
+            const loginFormElement = document.getElementById("loginForm");
+            if (loginFormElement) {
+                loginFormElement.addEventListener("submit", async function (e) {
+                    e.preventDefault();
+    
+                    let username = document.getElementById("username")?.value.trim();
+                    const password = document.getElementById("password")?.value.trim();
+    
+                    if (!validateUsername(username) || !validatePassword(password)) return;
+    
+                    try {
+                        const response = await fetch("/login", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded"
+                            },
+                            body: new URLSearchParams({
+                                name: username,
+                                password: password
+                            })
+                        });
+    
+                        const contentType = response.headers.get("content-type");
+    
+                        if (contentType && contentType.includes("application/json")) {
+                            const result = await response.json();
+                            console.log("Login response:", result);
+    
+                            if (response.ok) {
+                                alert(result.message);
+                                window.location.href = result.redirect;
+                            } else {
+                                alert(result.message || "Login failed");
+                            }
+                        } else {
+                            const text = await response.text();
+                            console.warn("Unexpected content:", text);
+                            alert("Unexpected response from server.");
+                        }
+    
+                    } catch (error) {
+                        console.error("Login Error:", error);
+                        alert("An error occurred during login. Please try again.");
+                    }
+                });
+            } else {
+                console.warn("Login form not found.");
+            }
+        });
+    
+        // Dummy validators — replace with your actual logic
+        function validateUsername(username) {
+            return /^[a-zA-Z0-9]{3,}$/.test(username);
+        }
+    
+        function validatePassword(password) {
+            return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,12}$/.test(password);
+        }
+    </script>
+    
+    
+</body>
+
+</html>

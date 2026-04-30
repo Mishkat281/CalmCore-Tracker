@@ -1,0 +1,289 @@
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ================= BODY ================= */
+body {
+    font-family: "Comic Sans MS", "Comic Sans";
+    padding-top: 70px;
+}
+
+/* ================= HEADER ================= */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: #2f2f2f;
+    z-index: 1000;
+    display: flex;          /* ✅ fix */
+    align-items: center;    /* ✅ fix */
+    padding: 0 40px;        /* ✅ fix */
+}
+
+/* ================= MENU BUTTON ================= */
+.menu-button {
+    display: none;
+    font-size: 22px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* ================= NAV ================= */
+#menu {
+    height: 100%;
+    width: 100%;            /* ✅ fix */
+    display: flex;          /* ✅ fix */
+    align-items: center;    /* ✅ fix */
+}
+
+.main_menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  /* ✅ fix */
+    height: 100%;
+    width: 100%;                     /* ✅ fix */
+    padding: 0;                      /* ✅ fix - padding moved to header */
+}
+
+/* ================= NAV LINKS ================= */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links li {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links li::after {
+    content: "";
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* ================= LOGIN / LOGOUT ================= */
+.login {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.login a {
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.login a:first-child::after {
+    content: "";
+}
+
+.login a:hover {
+    text-decoration: underline;
+}
+
+/* ================= MAIN CONTENT ================= */
+.info_quiz {
+    color: #708090;
+    text-align: justify;
+    padding: 40px 10%;
+    font-size: 18px;
+}
+
+.heading {
+    text-decoration: underline;
+}
+
+.rule {
+    background-color: #708090;
+    color: white;
+    text-align: justify;
+    padding: 40px 10%;
+    margin-top: 30px;
+}
+
+.point {
+    font-size: 20px;
+    text-decoration: underline;
+}
+
+/* ================= BUTTON ================= */
+.nxt_btn {
+    color: #708090;
+    font-size: 18px;
+    margin-top: 20px;
+    background-color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.nxt_btn:hover {
+    text-decoration: underline;
+}
+
+/* ================= QUIZ ================= */
+.Quiz_form {
+    margin: 5%;
+    padding: 5%;
+}
+
+.quiz_heading {
+    color: #708090;
+    text-align: center;
+    font-size: 30px;
+    text-decoration: underline;
+    margin-bottom: 30px;
+}
+
+.quizForm {
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Question blocks - odd */
+.q1,.q3,.q5,.q7,.q9,.q11,.q13,.q15,.q17,.q19,.q21,.q23,.q25,.q27,.q29 {
+    background-color: #708090;
+    color: white;
+    padding: 20px;
+}
+
+/* Question blocks - even */
+.q2,.q4,.q6,.q8,.q10,.q12,.q14,.q16,.q18,.q20,.q22,.q24,.q26,.q28,.q30 {
+    background-color: white;
+    color: #708090;
+    padding: 20px;
+}
+
+/* Radio buttons */
+.radio-option {
+    display: block;
+    margin: 8px 0;
+}
+
+input[type="radio"] {
+    transform: scale(1.4);
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+/* Submit */
+.submitQuiz {
+    background-color: #708090;
+    font-size: 20px;
+    margin-top: 30px;
+    color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.submitQuiz:hover {
+    opacity: 0.85;
+}
+
+/* ================= MOBILE (≤600px) ================= */
+@media (max-width: 600px) {
+
+    body {
+        padding-top: 60px;
+    }
+
+    header {
+        height: auto;
+        padding: 10px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .menu-button {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    #menu {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #menu.active {
+        display: flex;
+    }
+
+    .main_menu {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 0;
+        gap: 15px;
+        height: auto;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .login {
+        margin-left: 0;
+    }
+
+    .info_quiz,
+    .rule {
+        padding: 20px;
+        font-size: 15px;
+    }
+
+    .quiz_heading {
+        font-size: 22px;
+    }
+
+    .quizForm {
+        font-size: 16px;
+    }
+
+    .submitQuiz,
+    .nxt_btn {
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+}
+
+/* ================= TABLET (≤900px) ================= */
+@media (max-width: 900px) {
+
+    .info_quiz,
+    .rule {
+        font-size: 16px;
+        padding: 30px 8%;
+    }
+
+    .quiz_heading {
+        font-size: 26px;
+    }
+}

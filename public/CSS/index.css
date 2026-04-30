@@ -1,0 +1,208 @@
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ================= BODY ================= */
+body {
+    font-family: "Comic Sans MS", "Comic Sans";
+    background-image: url('img/mian_bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;   /* ✅ allow vertical scroll */
+}
+
+/* ================= HEADER ================= */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(51, 51, 51, 0.95);
+    padding: 15px 30px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-button {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* ================= NAV ================= */
+ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+ul li a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+ul li a:hover {
+    text-decoration: underline;
+}
+
+/* ================= MAIN CONTENT ================= */
+.content-wrapper {
+    margin-top: 100px; /* space for fixed header */
+    display: flex;
+    justify-content: space-between;
+    padding: 40px 60px;
+    gap: 40px;
+}
+
+/* LEFT */
+.left_content {
+    width: 40%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* RIGHT */
+.right_content {
+    width: 55%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+/* SECTIONS */
+.section {
+    opacity: 1;
+    transform: none;
+    padding: 40px 0;
+}
+
+/* ================= TEXT ================= */
+h1 {
+    font-size: 56px;
+    max-width: 100%;
+}
+
+h2 {
+    font-size: 36px;
+}
+
+h4 {
+    font-size: 20px;
+}
+
+/* ================= BUTTON ================= */
+#Strat_link {
+    color: #D6CADD;
+    background-color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    display: inline-block;
+    text-decoration: none;
+    width: fit-content;
+}
+
+/* ================= COUNTER ================= */
+.counter-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.counter-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.counter-item h2,
+.counter-item p {
+    font-size: 28px;
+    color: white;
+}
+
+/* ================= MOBILE (≤600px) ================= */
+@media (max-width: 600px) {
+
+    .menu-button {
+        display: block;
+    }
+
+    nav#menu {
+        display: none;
+        position: absolute;
+        top: 65px;
+        left: 0;
+        width: 100%;
+        background-color: rgba(51, 51, 51, 0.95);
+        padding: 20px 0;
+    }
+
+    nav#menu.active {
+        display: block;
+    }
+
+    ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+        padding: 30px 20px;
+    }
+
+    .left_content,
+    .right_content {
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    h4 {
+        font-size: 16px;
+    }
+}
+
+/* ================= TABLET (≤900px) ================= */
+@media (max-width: 900px) {
+
+    .content-wrapper {
+        flex-direction: column;
+        padding: 40px;
+    }
+
+    .left_content,
+    .right_content {
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+
+    h2 {
+        font-size: 28px;
+    }
+}

@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="CSS/index.css" />
+    <title>SS-Home</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Comic Sans MS", "Comic Sans";
+        background-image: url("img/main.jpeg");
+        background-size: cover;
+        background-position: center center;
+        /* Centers the main focus of the image */
+        background-repeat: no-repeat;
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+        /* Prevent horizontal scrolling */
+      }
+
+      /* General styles for header and menu */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(51, 51, 51);
+        padding: 20px;
+      }
+
+      .menu-button {
+        display: none;
+        /* Hidden by default on larger screens */
+        font-size: 24px;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
+
+      /* Mobile view (up to 600px) */
+      @media (max-width: 600px) {
+        /* Show the menu button */
+        .menu-button {
+          display: block;
+        }
+
+        /* Hide the menu by default */
+        nav#menu {
+          display: none;
+          flex-direction: column;
+          gap: 20px;
+          background-color: rgba(51, 51, 51);
+          position: absolute;
+          top: 60px;
+          /* Adjust based on header height */
+          left: 0;
+          width: 100%;
+          padding: 10px;
+          z-index: 10;
+        }
+
+        /* Show the menu when it has the "active" class */
+        nav#menu.active {
+          display: flex;
+        }
+
+        /* Style the links for mobile view */
+        nav#menu ul {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        nav#menu ul li {
+          margin: 10px 0;
+        }
+      }
+
+      /* Other styles remain the same */
+
+      ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      ul li {
+        margin: 0 10px;
+      }
+
+      ul li a {
+        text-decoration: none;
+        font-weight: 500;
+        padding: 5px;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      ul li a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 600px) {
+        .main_menu {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .login {
+          margin-left: 0;
+          margin-top: 10px;
+        }
+      }
+
+      .main_menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      /* Login/Logout alignment */
+      .login {
+        margin-left: auto;
+        display: flex;
+        gap: 15px;
+      }
+
+      .login a {
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        padding: 5px 10px;
+      }
+
+      .login a:hover {
+        text-decoration: underline;
+      }
+
+      /* main content */
+      .content-wrapper {
+        align-items: flex-start;
+        padding-top: 100px;
+        width: 100%;
+        height: calc(100vh - 80px);
+        display: flex;
+        justify-content: space-between;
+        padding: 40px 60px;
+        gap: 40px;
+        font-size: 24px;
+      }
+
+      .left_content {
+        width: 35%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* Center vertically */
+        align-items: flex-start;
+        /* Align text to the left */
+        padding-left: 50px;
+        color: white;
+        padding-top: 200px;
+      }
+
+      .right_content {
+        align-items: flex-end;
+        padding-right: 10px;
+        padding-top: 250px;
+        position: relative;
+        overflow: hidden;
+        height: 100vh;
+        /* Full height for scrolling */
+        border-radius: 10px;
+        overflow-y: auto;
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-end;
+        height: 100vh;
+        /* Ensure full height for scrolling */
+        overflow-y: scroll;
+        /* Enable vertical scrolling */
+        scrollbar-width: none;
+        /* For Firefox */
+      }
+
+      /* Hide scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+      .right_content::-webkit-scrollbar {
+        display: none;
+        /* Hide the scrollbar */
+      }
+
+      .section {
+        opacity: 0;
+        transform: translateY(50px);
+        transition:
+          opacity 0.6s ease-out,
+          transform 0.6s ease-out;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: right;
+        align-items: right;
+        padding-left: 500px;
+      }
+
+      .section.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      h1 {
+        font-size: 60px;
+        max-width: 50%;
+        color: white;
+      }
+
+      h2 {
+        color: white;
+        font-size: 40px;
+      }
+
+      h4 {
+        color: white;
+        font-size: 20px;
+      }
+
+      /* the typewriter effects */
+      .typewriter-container {
+        display: flex;
+        height: 100vh;
+        background-color: #d6cadd;
+        color: white;
+        /* Blush pink color for text */
+        font-family: "Courier New", Courier, monospace;
+        font-size: 2rem;
+      }
+
+      /* Blinking cursor effect */
+      .typewriter-container h1::after {
+        content: "|";
+        animation: blink 0.6s infinite step-end;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      #Strat_link {
+        color: #d6cadd;
+        font-size: 20px;
+        margin-top: 20px;
+        background-color: white;
+        text-decoration: none;
+        border: 2px solid white;
+        border-radius: 5px;
+        padding: 10px 15px;
+        /* Add some padding for better appearance */
+        display: inline-block;
+        /* Ensure the link is treated as a block for spacing */
+      }
+
+      #Strat_link a {
+        color: inherit;
+        /* Use the inherited color from #Strat_link */
+        text-decoration: none;
+        /* Remove underline from link */
+      }
+
+      /* Optional: Add hover effect for the link */
+      #Strat_link a:hover {
+        text-decoration: underline;
+        /* Underline on hover for emphasis */
+      }
+
+      /* Flexbox styling for counters */
+      .counter-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .counter-item {
+        display: flex;
+        align-items: center;
+        /* Vertically center the text */
+        gap: 10px;
+        /* Space between <h2> and <p> */
+      }
+
+      .counter-item h2 {
+        font-size: 2.5rem;
+        color: white;
+        margin-right: 10px;
+      }
+
+      .counter-item p {
+        font-size: 2.5rem;
+        color: white;
+        font-weight: bold;
+      }
+
+      #about {
+        color: white;
+      }
+
+      #about h2 {
+        text-decoration: underline;
+      }
+
+      /* Mobile view (up to 600px) */
+      @media (max-width: 600px) {
+        header {
+          font-size: 18px;
+          padding: 10px;
+        }
+
+        ul {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .content-wrapper {
+          flex-direction: column;
+          padding: 60px 20px;
+          gap: 20px;
+        }
+
+        .left_content,
+        .right_content {
+          width: 100%;
+          padding: 20px;
+          font-size: 18px;
+        }
+
+        h1,
+        h2 {
+          font-size: 28px;
+        }
+
+        h4 {
+          font-size: 16px;
+        }
+      }
+
+      /* Tablet view (up to 900px) */
+      @media (max-width: 900px) {
+        .content-wrapper {
+          padding: 60px 40px;
+          gap: 20px;
+        }
+
+        h1,
+        h2 {
+          font-size: 20px;
+        }
+
+        h4 {
+          font-size: 18px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <button class="menu-button" onclick="toggleMenu()">☰ Menu</button>
+
+      <nav id="menu">
+        <div class="main_menu">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li id="identifyBtn"><a href="/Identify">Identify</a></li>
+            <li id="manageBtn"><a href="/Manage">Manage</a></li>
+            <li id="dashboardBtn"><a href="/Dashboard">Dashboard</a></li>
+          </ul>
+
+          <div class="login">
+            <a href="/login" id="loginBtn">Login</a>
+            <a href="/logout" id="logoutBtn" style="display: none">Logout</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="content-wrapper">
+      <div class="left_content">
+        <h1 style="color: black;">CalmCore Tracker</h1>
+
+        <div id="Strat_link" style="text-decoration: none">
+          <ul style="list-style: none; padding-left: 0; margin: 0;color: black;">
+            <li id="startIdentifyBtn">
+              <a href="#" onclick="navigateToIdentify()">Let’s get started</a>
+            </li>
+          </ul>
+        </div>
+
+        <br />
+        <h4 style="color: black;">We help you to</h4>
+        <h4 id="typewriter-text" style="color: black;"></h4>
+      </div>
+
+      <div class="right_content">
+        <!-- Section 1: More Info -->
+        <div class="section" id="more_info">
+          <h1 style="color: black;">More Info</h1>
+        </div>
+
+        <!-- Section 2: About -->
+        <div class="section" id="about" >
+          <h2 style="color: black;">About Us</h2>
+          <h3 style="color: black;">
+            At CalmCore Tracker, we help you identify, understand, and manage stress
+            through advanced AI technology. Our mission is to make mental
+            well-being accessible by offering personalized, confidential, and
+            evidence-based support.
+          </h3>
+        </div>
+
+        <!-- Section 3: Contact -->
+        <div class="section counter-container" id="Contact">
+          <div class="counter-item">
+            <h2 style="color: black;">Accuracy:</h2>
+            <p class="counter" data-target="80" style="color: black;">0</p>
+          </div>
+          <div class="counter-item">
+            <h2 style="color: black;">User-Friendliness:</h2>
+            <p class="counter" data-target="395" style="color: black;">0</p>
+          </div>
+          <div class="counter-item" style="color: black;">
+            <h2 style="color: black;">Helpfulness:</h2>
+            <p class="counter" data-target="899" style="color: black;">0</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("menu");
+        menu.classList.toggle("active");
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        const loginBtn = document.getElementById("loginBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        // New nav elements
+        const identifyBtn = document.getElementById("identifyBtn");
+        const manageBtn = document.getElementById("manageBtn");
+        const dashboardBtn = document.getElementById("dashboardBtn");
+
+        // Hide buttons initially (for safety)
+        identifyBtn.style.display = "none";
+        manageBtn.style.display = "none";
+        dashboardBtn.style.display = "none";
+
+        // Check login session from server
+        async function checkLoginStatus() {
+          try {
+            const res = await fetch("/authUser");
+            if (res.ok) {
+              // User is logged in
+              loginBtn.style.display = "none";
+              logoutBtn.style.display = "inline-block";
+              identifyBtn.style.display = "list-item";
+              manageBtn.style.display = "list-item";
+              dashboardBtn.style.display = "list-item";
+            } else {
+              // Not logged in
+              loginBtn.style.display = "inline-block";
+              logoutBtn.style.display = "none";
+              identifyBtn.style.display = "none";
+              manageBtn.style.display = "none";
+              dashboardBtn.style.display = "none";
+            }
+          } catch (err) {
+            console.error("Error checking login status:", err);
+            loginBtn.style.display = "inline-block";
+            logoutBtn.style.display = "none";
+            identifyBtn.style.display = "none";
+            manageBtn.style.display = "none";
+            dashboardBtn.style.display = "none";
+          }
+        }
+
+        // Logout handler
+        logoutBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          fetch("/logout").then(() => {
+            loginBtn.style.display = "inline-block";
+            logoutBtn.style.display = "none";
+            identifyBtn.style.display = "none";
+            manageBtn.style.display = "none";
+            dashboardBtn.style.display = "none";
+            window.location.href = "/home"; // Optional redirect
+          });
+        });
+
+        await checkLoginStatus();
+      });
+
+      //lets start button
+     function navigateToIdentify() {
+    fetch('/authUser')
+        .then(res => {
+            if (res.ok) {
+                // User is logged in, navigate
+                window.location.href = "/Identify";
+            } else {
+                // Not logged in, show message
+                alert("Please login first!");
+            }
+        })
+        .catch(err => {
+            console.error("Error checking auth:", err);
+            alert("Please login first!");
+        });
+}
+
+      // Typewriter Effect
+      document.addEventListener("DOMContentLoaded", function () {
+        const texts = ["Identify Stress", "Manage Stress"];
+        let textIndex = 0;
+        let charIndex = 0;
+        const typewriterText = document.getElementById("typewriter-text");
+
+        function typeWriter() {
+          if (!typewriterText) return;
+          const currentText = texts[textIndex];
+          if (charIndex < currentText.length) {
+            typewriterText.textContent += currentText.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeWriter, 100);
+          } else {
+            setTimeout(eraseText, 1000);
+          }
+        }
+
+        function eraseText() {
+          if (!typewriterText) return;
+          const currentText = texts[textIndex];
+          if (charIndex > 0) {
+            typewriterText.textContent = currentText.substring(
+              0,
+              charIndex - 1,
+            );
+            charIndex--;
+            setTimeout(eraseText, 50);
+          } else {
+            textIndex = (textIndex + 1) % texts.length;
+            setTimeout(typeWriter, 500);
+          }
+        }
+
+        typeWriter();
+
+        // Counter animation
+        const counters = document.querySelectorAll(".counter");
+        counters.forEach((counter) => {
+          const updateCounter = () => {
+            const target = +counter.getAttribute("data-target");
+            const current = +counter.textContent;
+            const increment = target / 200;
+
+            if (current < target) {
+              counter.textContent = Math.ceil(current + increment);
+              setTimeout(updateCounter, 10);
+            } else {
+              counter.textContent = target;
+            }
+          };
+
+          updateCounter();
+        });
+
+        // Intersection Observer for section visibility
+        const sections = document.querySelectorAll(".section");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              entry.target.classList.toggle("active", entry.isIntersecting);
+            });
+          },
+          { threshold: 0.5 },
+        );
+
+        sections.forEach((section) => observer.observe(section));
+      });
+
+      // Fetch current user
+      async function getCurrentUser() {
+        try {
+          const response = await fetch("/authUser", { method: "GET" });
+          if (!response.ok) return null;
+
+          const data = await response.json();
+          return data.username;
+        } catch (error) {
+          console.error("Error fetching user:", error);
+          return null;
+        }
+      }
+
+      window.onload = async function () {
+        const username = await getCurrentUser();
+        const welcomeMessage = document.getElementById("welcomeMessage");
+        const logoutButton = document.getElementById("logoutButton");
+
+        if (username && welcomeMessage && logoutButton) {
+          welcomeMessage.innerText = `Welcome, ${username}!`;
+          logoutButton.style.display = "block";
+          logoutButton.onclick = function () {
+            document.cookie =
+              "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie =
+              "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = "login.html";
+          };
+        } else if (logoutButton) {
+          logoutButton.style.display = "none";
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded">
+
+    <link rel="stylesheet" href="AI_chat/style.css">
+</head>
+
+<body>
+<div class="chatbot-popup">
+
+    <div class="chat-header">
+        <h2>Chatbot</h2>
+    </div>
+
+    <div class="chat-body">
+        <div class="message bot-message">
+            <div class="message-text">
+                Hey there 👋<br>How can I help you today?
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-footer">
+        <form class="chat-form">
+            <textarea class="message-input"
+                      placeholder="Message..."
+                      required></textarea>
+
+            <div class="chat-controls">
+                <button type="submit" id="send-message">
+                    <span class="material-symbols-rounded">arrow_upward</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script src="AI_chat/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/Dashboard.css">
+    <title>SS-Identify</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Popup Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            width: 60%;
+            height: 70%;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        iframe {
+            width: 100%;
+            height: 90%;
+            border: none;
+        }
+
+        @media (max-width: 600px) {
+            .main_menu {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .login {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+
+        .main_menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Login/Logout alignment */
+        .login {
+            margin-left: auto;
+            display: flex;
+            gap: 15px;
+        }
+
+        .login a {
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        .login a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <button class="menu-button" onclick="toggleMenu()">☰ Menu</button>
+        <nav id="menu">
+            <div class="main_menu">
+                <ul>
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li id="identifyBtn"><a href="/Identify">Identify</a></li>
+                    <li id="manageBtn"><a href="/Manage">Manage</a></li>
+                    <li id="dashboardBtn"><a href="/Dashboard">Dashboard</a></li>
+                </ul>
+                <div class="login">
+                    <a href="/login" id="loginBtn">Login</a>
+                    <a href="/logout" id="logoutBtn" style="display: none;">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <h2 class="Main_heading"><u>Dashboard</u></h2><br><br>
+
+    <!-- Result display area -->
+    <div id="result" class="result"></div>
+
+    <!-- Chart container -->
+    <div class="chart-container">
+        <canvas id="lineChart"></canvas>
+    </div>
+
+    <!-- Popup Modal HTML -->
+    <div id="popupModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <iframe id="popupFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // menu toggle
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.classList.toggle("active");
+        }
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            const loginBtn = document.getElementById("loginBtn");
+            const logoutBtn = document.getElementById("logoutBtn");
+
+            // New nav elements
+            const identifyBtn = document.getElementById("identifyBtn");
+            const manageBtn = document.getElementById("manageBtn");
+            const dashboardBtn = document.getElementById("dashboardBtn");
+
+            // Hide buttons initially (for safety)
+            identifyBtn.style.display = "none";
+            manageBtn.style.display = "none";
+            dashboardBtn.style.display = "none";
+
+            // Check login session from server
+            async function checkLoginStatus() {
+                try {
+                    const res = await fetch("/authUser");
+                    if (res.ok) {
+                        // User is logged in
+                        loginBtn.style.display = "none";
+                        logoutBtn.style.display = "inline-block";
+                        identifyBtn.style.display = "list-item";
+                        manageBtn.style.display = "list-item";
+                        dashboardBtn.style.display = "list-item";
+                    } else {
+                        // Not logged in
+                        loginBtn.style.display = "inline-block";
+                        logoutBtn.style.display = "none";
+                        identifyBtn.style.display = "none";
+                        manageBtn.style.display = "none";
+                        dashboardBtn.style.display = "none";
+                    }
+                } catch (err) {
+                    console.error("Error checking login status:", err);
+                    loginBtn.style.display = "inline-block";
+                    logoutBtn.style.display = "none";
+                    identifyBtn.style.display = "none";
+                    manageBtn.style.display = "none";
+                    dashboardBtn.style.display = "none";
+                }
+            }
+
+            // Logout handler
+            logoutBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                fetch("/logout").then(() => {
+                    loginBtn.style.display = "inline-block";
+                    logoutBtn.style.display = "none";
+                    identifyBtn.style.display = "none";
+                    manageBtn.style.display = "none";
+                    dashboardBtn.style.display = "none";
+                    window.location.href = "/home"; // Optional redirect
+                });
+            });
+
+            await checkLoginStatus();
+        });
+
+
+        // Popup handlers
+        function openPopup(page) {
+            document.getElementById("popupFrame").src = page;
+            document.getElementById("popupModal").style.display = "flex";
+        }
+
+        function closePopup() {
+            document.getElementById("popupModal").style.display = "none";
+            document.getElementById("popupFrame").src = "";
+        }
+
+        // Fetch quiz results and show feedback
+        function fetchResults() {
+            fetch(`/averageScores`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+                    const chartContainer = document.querySelector('.chart-container');
+
+                    chartContainer.style.display = 'flex';
+
+                    if (data.message || data.averageScores.length === 0) {
+                        resultDiv.innerHTML = `
+                            <h4><u>Quiz Detail:</u></h4><br>
+                            <p><strong>No quizzes have been taken yet.</strong></p>
+                            <p>Take a quiz to see your progress!</p>
+                        `;
+                        drawCharts([]);
+                    } else {
+                        const scores = data.averageScores;
+                        const lastScore = scores[scores.length - 1];
+                        const totalPossibleScore = scores.length * 3;
+                        const percentage = ((scores.reduce((a, b) => a + b, 0) / totalPossibleScore) * 100).toFixed(2);
+
+                        let feedback;
+                        const averageScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+                        if (averageScore <= 1.5) {
+                            feedback = "Low Stress Level";
+                        } else if (averageScore <= 2.5) {
+                            feedback = "Moderate Stress Level";
+                        } else {
+                            feedback = "High Stress Level";
+                        }
+
+                        let popupUrl;
+                        if (feedback === "Low Stress Level") {
+                            popupUrl = "manage/low.html";
+                        } else if (feedback === "Moderate Stress Level") {
+                            popupUrl = "manage/moderate.html";
+                        } else {
+                            popupUrl = "manage/high.html";
+                        }
+
+                        resultDiv.innerHTML = `
+                            <h4><u>Quiz Detail:</u></h4><br>
+                            <p><strong>Last Average Score:<br></strong> ${lastScore}</p><br>
+                            <p><strong>Overall Percentage:<br></strong> ${percentage}%</p><br>
+                            <p><strong>Stress Level:<br></strong> ${feedback}</p><br>
+                            <p>How to Manage:</p>
+                            <a href="#" onclick="openPopup('${popupUrl}'); return false;">Click Here</a>
+                        `;
+
+                        drawCharts(scores);
+                    }
+
+                    resultDiv.style.display = 'block';
+                })
+                .catch(error => console.error('Error fetching results:', error));
+        }
+
+        // Draw chart using Chart.js
+        function drawCharts(scores) {
+            const lineCtx = document.getElementById('lineChart').getContext('2d');
+            new Chart(lineCtx, {
+                type: 'line',
+                data: {
+                    labels: scores.length > 0 ? scores.map((_, index) => `Quiz ${index + 1}`) : ["No Data"],
+                    datasets: [{
+                        label: 'Average Scores',
+                        data: scores.length > 0 ? scores : [0],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.1,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: 'Quizzes' } },
+                        y: { title: { display: true, text: 'Scores' }, beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // Load results on page load
+        fetchResults();
+    </script>
+</body>
+
+</html>

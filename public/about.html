@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/CSS/about.css">
+    <title>SS-About</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Comic Sans MS", "Comic Sans";
+            background-image: url('/img/about_bg.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* General styles for header and menu */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(51, 51, 51);
+            padding: 20px;
+        }
+
+        .menu-button {
+            display: none;
+            /* Hidden by default on larger screens */
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Mobile view (up to 600px) */
+        @media (max-width: 600px) {
+
+            /* Show the menu button */
+            .menu-button {
+                display: block;
+            }
+
+            /* Hide the menu by default */
+            nav#menu {
+                display: none;
+                flex-direction: column;
+                gap: 20px;
+                background-color: rgba(51, 51, 51, 0.9);
+                position: absolute;
+                top: 60px;
+                /* Adjust based on header height */
+                left: 0;
+                width: 100%;
+                padding: 10px;
+                z-index: 10;
+            }
+
+            /* Show the menu when it has the "active" class */
+            nav#menu.active {
+                display: flex;
+            }
+
+            /* Style the links for mobile view */
+            nav#menu ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav#menu ul li {
+                margin: 10px 0;
+            }
+        }
+
+
+
+        ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        ul li {
+            margin: 0 10px;
+        }
+
+        ul li a {
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        ul li a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .main_menu {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .login {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+
+        .main_menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Login/Logout alignment */
+        .login {
+            margin-left: auto;
+            display: flex;
+            gap: 15px;
+        }
+
+        .login a {
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        .login a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main content */
+        .content-wrapper {
+            display: flex;
+            justify-content: flex-start;
+            /* Align content to the left */
+            align-items: center;
+            /* Center the content vertically */
+            width: 100%;
+            padding: 100px 60px 60px;
+            /* Account for header space and padding */
+            gap: 40px;
+            overflow-y: auto;
+            height: 100vh;
+            /* Adjust for header */
+        }
+
+        .left_content {
+            width: 70%;
+            /* Position content to the left, taking up 40% of the screen */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-left: 50px;
+            padding-top: 250px;
+            color: white;
+            position: relative;
+            overflow-y: auto;
+            height: calc(100vh - 100px);
+            /* Adjust height to account for header */
+            padding-top: 0;
+            /* Remove extra top padding */
+            height: 100vh;
+            /* Ensure full height for scrolling */
+            overflow-y: scroll;
+            /* Enable vertical scrolling */
+            scrollbar-width: none;
+            /* For Firefox */
+        }
+
+        /* Hide scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+        .left_content::-webkit-scrollbar {
+            display: none;
+            /* Hide the scrollbar */
+        }
+
+        /* Section styling */
+        .section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding-left: 0;
+            margin-bottom: 20px;
+            padding-top: 200px;
+        }
+
+
+        .section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-size: 60px;
+            max-width: 70%;
+            color: white;
+            text-decoration: underline;
+        }
+
+        p {
+            font-size: 20px;
+            max-width: 70%;
+        }
+
+        /* about.css: Responsive Adjustments */
+
+        /* Mobile view (up to 600px) */
+        @media (max-width: 600px) {
+            header {
+                font-size: 10px;
+                padding: 5px;
+            }
+
+            ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .content-wrapper {
+                flex-direction: column;
+                padding: 80px 20px;
+            }
+
+            .left_content {
+                width: 100%;
+                padding: 10px;
+                font-size: 18px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
+
+        /* Tablet view (up to 900px) */
+        @media (max-width: 900px) {
+            .content-wrapper {
+                padding: 80px 40px;
+                gap: 10px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .left_content {
+                padding: 10px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <button class="menu-button" onclick="toggleMenu()">☰ Menu</button>
+        <nav id="menu">
+            <div class="main_menu">
+                <ul>
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li id="identifyBtn"><a href="/Identify">Identify</a></li>
+                    <li id="manageBtn"><a href="/Manage">Manage</a></li>
+                    <li id="dashboardBtn"><a href="/Dashboard">Dashboard</a></li>
+                </ul>
+                <!-- Login section outside the ul to position it right -->
+                <div class="login">
+                    <a href="/login" id="loginBtn">Login</a>
+                    <a href="/logout" id="logoutBtn" style="display: none;">Logout</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <main class="content-wrapper">
+        <div class="left_content">
+            <div class="section">
+                <h1>About Us:</h1><br>
+                <p>Welcome to CalmCore Tracker, we help you identify, understand, and manage stress through advanced AI
+                    technology. Our platform offers personalized assessments, real-time emotional insights, and tailored
+                    coping strategies designed to support your mental well-being. By combining psychological expertise
+                    with cutting-edge AI, CalmCore Tracker empowers you to take control of your stress, build resilience,
+                    and lead a more balanced, fulfilling life. Whether you're navigating work pressures, personal
+                    challenges, or simply seeking peace of mind, we're here to guide you every step of the way.</p>
+            </div>
+            <div class="section">
+                <h1>Why Therapy Is Important:</h1><br>
+                <p>At CalmCore Tracker, we believe therapy is vital for anyone looking to lead a healthier, balanced life.
+                    Our mission is to make mental health support more accessible, personalized, and stigma-free by
+                    integrating compassionate care with intelligent AI solutions. Whether you're facing daily stressors
+                    or deeper emotional struggles, our platform connects you with the right tools and guidance to foster
+                    growth, healing, and self-awareness. We’re here to support your journey toward mental wellness—on
+                    your terms, at your pace.
+                </p>
+            </div>
+            <div class="section">
+                <h1>Our Approach:</h1><br>
+                <p>We combine the best of technology and psychology to bring you an interactive experience that truly
+                    understands and supports your mental well-being. At CalmCore Tracker, our AI-driven platform engages
+                    with you in meaningful ways—offering real-time responses, emotional tracking, and personalized
+                    coping strategies tailored to your unique needs. By bridging the gap between traditional therapy and
+                    modern innovation, we empower you to actively participate in your mental health journey with
+                    confidence and clarity.</p>
+            </div>
+        </div>
+    </main>
+
+
+    <script>
+        // Toggle Menu
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.classList.toggle("active");
+        }
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            const loginBtn = document.getElementById("loginBtn");
+            const logoutBtn = document.getElementById("logoutBtn");
+
+            // New nav elements
+            const identifyBtn = document.getElementById("identifyBtn");
+            const manageBtn = document.getElementById("manageBtn");
+            const dashboardBtn = document.getElementById("dashboardBtn");
+
+            // Hide buttons initially (for safety)
+            identifyBtn.style.display = "none";
+            manageBtn.style.display = "none";
+            dashboardBtn.style.display = "none";
+
+            // Check login session from server
+            async function checkLoginStatus() {
+                try {
+                    const res = await fetch("/authUser");
+                    if (res.ok) {
+                        // User is logged in
+                        loginBtn.style.display = "none";
+                        logoutBtn.style.display = "inline-block";
+                        identifyBtn.style.display = "list-item";
+                        manageBtn.style.display = "list-item";
+                        dashboardBtn.style.display = "list-item";
+                    } else {
+                        // Not logged in
+                        loginBtn.style.display = "inline-block";
+                        logoutBtn.style.display = "none";
+                        identifyBtn.style.display = "none";
+                        manageBtn.style.display = "none";
+                        dashboardBtn.style.display = "none";
+                    }
+                } catch (err) {
+                    console.error("Error checking login status:", err);
+                    loginBtn.style.display = "inline-block";
+                    logoutBtn.style.display = "none";
+                    identifyBtn.style.display = "none";
+                    manageBtn.style.display = "none";
+                    dashboardBtn.style.display = "none";
+                }
+            }
+
+            // Logout handler
+            logoutBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                fetch("/logout").then(() => {
+                    loginBtn.style.display = "inline-block";
+                    logoutBtn.style.display = "none";
+                    identifyBtn.style.display = "none";
+                    manageBtn.style.display = "none";
+                    dashboardBtn.style.display = "none";
+                    window.location.href = "/home"; // Optional redirect
+                });
+            });
+
+            await checkLoginStatus();
+
+
+
+
+
+            // Activate sections on load
+            const sections = document.querySelectorAll(".section");
+            sections.forEach(section => {
+                section.classList.add("active");
+            });
+        });
+    </script>
+
+</body>
+
+</html>

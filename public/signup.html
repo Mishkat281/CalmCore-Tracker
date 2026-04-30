@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="CSS/signup.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="Form registerForm">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <div class="input-box">
+                    <i class='bx bxs-user'></i>
+                    <label for="name">Username</label>
+                    <input type="text" name="name" placeholder="Enter Your Username*" required>
+                </div>
+                <div class="input-box">
+                    <i class='bx bxs-lock'></i>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" placeholder="Enter Your Password*" required>
+                </div>
+                <div class="input-box">
+                    <i class='bx bxs-lock'></i>
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" name="confirmPassword" placeholder="Enter Your Password Again*" required>
+                </div>
+                <button class="btn" id="registerBtn" type="submit">Register</button>
+            </form>
+    
+            <p class="LoginBtn"><a href="/login">Login Now</a></p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("registerForm").addEventListener("submit", async function (e) {
+                e.preventDefault();
+    
+                const name = document.querySelector("input[name='name']").value.trim();
+                const password = document.querySelector("input[name='password']").value.trim();
+                const confirmPassword = document.querySelector("input[name='confirmPassword']").value.trim();
+    
+                if (!validateName(name) || !validatePassword(password) || !validateConfirmPassword(password, confirmPassword)) {
+                    return;
+                }
+    
+                const data = { name, password, confirmPassword };
+    
+                try {
+                    const response = await fetch("/signup", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data),
+                    });
+    
+                    const result = await response.json();
+                    console.log("Server response:", result);
+    
+                    if (!response.ok) {
+                        alert(result.message);
+                        return;
+                    }
+    
+                    alert(result.message);
+                    document.querySelector(".LoginBtn a").click(); // Redirect to login
+                } catch (error) {
+                    console.error("Registration Error:", error);
+                    alert("An error occurred during registration. Please try again.");
+                }
+            });
+    
+            function validateName(name) {
+                const nameRegex = /^[a-zA-Z0-9]{3,}$/;
+                if (!name) {
+                    alert("Username cannot be blank.");
+                    return false;
+                }
+                if (!nameRegex.test(name)) {
+                    alert("Username must be at least 3 characters long and contain only letters and numbers.");
+                    return false;
+                }
+                return true;
+            }
+    
+            function validatePassword(password) {
+                const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,12}$/;
+                if (!password) {
+                    alert("Password cannot be blank.");
+                    return false;
+                }
+                if (!passwordRegex.test(password)) {
+                    alert("Password must be 6-12 characters long, contain at least one uppercase letter, one number, and one special character.");
+                    return false;
+                }
+                return true;
+            }
+    
+            function validateConfirmPassword(password, confirmPassword) {
+                if (!confirmPassword) {
+                    alert("Confirm Password cannot be blank.");
+                    return false;
+                }
+                if (password !== confirmPassword) {
+                    alert("Passwords do not match.");
+                    return false;
+                }
+                return true;
+            }
+        });
+    </script>
+    
+</body>
+
+</html>

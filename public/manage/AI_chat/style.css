@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+/* ================= BODY ================= */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(#EEEEFF, #f88a8a);
+    padding: 20px;
+}
+
+/* ================= BACK BUTTON ================= */
+.back-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    background-color: #f3b5b5;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.back-btn:hover {
+    opacity: 0.85;
+}
+
+/* ================= CHAT CONTAINER ================= */
+.chatbot-popup {
+    width: 100%;
+    max-width: 950px;
+    height: 90vh;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 128px rgba(0, 0, 0, 0.1),
+                0 32px 64px rgba(0, 0, 0, 0.25);
+}
+
+/* ================= HEADER ================= */
+.chat-header {
+    background: #f3b5b5;
+    padding: 15px 22px;
+    text-align: center;
+}
+
+.chat-header h2 {
+    color: #333;
+    font-size: 1.4rem;
+}
+
+/* ================= CHAT BODY ================= */
+.chat-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: calc(100% - 140px);
+    overflow-y: auto;
+}
+
+/* ================= MESSAGES ================= */
+.message {
+    display: flex;
+}
+
+.bot-message {
+    justify-content: flex-start;
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
+.message-text {
+    padding: 12px 16px;
+    max-width: 75%;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.bot-message .message-text {
+    background: #F2F2FF;
+    border-radius: 13px 13px 13px 3px;
+}
+
+.user-message .message-text {
+    background: #f3b5b5;
+    color: white;
+    border-radius: 13px 13px 3px 13px;
+}
+
+/* ================= FOOTER ================= */
+.chat-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    background: #fff;
+}
+
+.chat-form {
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    outline: 1px solid #CCCCE5;
+    padding: 5px;
+}
+
+.chat-form:focus-within {
+    outline: 2px solid #f3b5b5;
+}
+
+.message-input {
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 45px;
+    resize: none;
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    border-radius: 30px;
+}
+
+.chat-controls {
+    display: flex;
+    align-items: center;
+}
+
+#send-message {
+    height: 38px;
+    width: 38px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: #f3b5b5;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#send-message:hover {
+    opacity: 0.9;
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 600px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .chatbot-popup {
+        height: 95vh;
+        border-radius: 10px;
+    }
+
+    .chat-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .message-text {
+        max-width: 85%;
+        font-size: 0.9rem;
+    }
+
+    .message-input {
+        font-size: 0.9rem;
+    }
+
+    .back-btn {
+        top: 10px;
+        left: 10px;
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+}

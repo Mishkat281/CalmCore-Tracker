@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/manage_stress.css">
+    <title>SS-Identify</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Comic Sans MS", "Comic Sans";
+            background-color: #d6cadd;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            width: 100%;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333333cc;
+            padding: 20px;
+        }
+
+        .menu-button {
+            display: none;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .menu-button {
+                display: block;
+            }
+
+            nav#menu {
+                display: none;
+                flex-direction: column;
+                gap: 20px;
+                background-color: rgba(51, 51, 51, 0.9);
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                padding: 10px;
+                z-index: 10;
+            }
+
+            nav#menu.active {
+                display: flex;
+            }
+
+            nav#menu ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav#menu ul li {
+                margin: 10px 0;
+            }
+        }
+
+        ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        ul li a {
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Popup Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color:  rgba(51, 51, 51, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            width: 60%;
+            height: 70%;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        iframe {
+            width: 100%;
+            height: 90%;
+            border: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1,
+        h2 {
+            color: rgba(51, 51, 51, 0.9);
+            padding: 10px 15px;
+            text-decoration: underline;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            color:  rgba(51, 51, 51, 0.9);
+            border: #333333cc solid 5px;
+            border-radius: 5px;
+            padding: 10px 15px;
+        }
+        .Meditation_video{
+            display: inline-block;
+            padding: 10px 15px;
+            background:  rgba(51, 51, 51, 0.9);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background:  rgba(51, 51, 51, 0.9);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+            /* Music Modal */
+    .music-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .music-modal-content {
+        background-color: white;
+        padding: 15px;
+        width: 320px;
+        height: 160px;
+        border-radius: 12px;
+        position: relative;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .music-close-btn {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 30px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #333;
+        transition: 0.3s;
+    }
+
+    .music-close-btn:hover {
+        color: red;
+    }
+
+    .music-player {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    position: relative;
+    text-align: center;
+}
+
+/* Bigger Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 40px;  /* Increased size */
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    color: red; /* Turns red when hovered */
+    transform: scale(1.2); /* Slight zoom effect */
+}
+
+/* Video Size */
+#videoPlayer {
+    width: 100%;
+    max-height: 400px;
+}
+audio {
+        width: 100%;
+    }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <button class="menu-button" onclick="toggleMenu()">☰ Menu</button>
+        <nav id="menu">
+            <div class="main_menu">
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../about.html">About</a></li>
+                    <li><a href="../Identify.html">Identify</a></li>
+                    <li><a href="../Manage.html">Manage</a></li>
+                    <li><a href="../Dashboard.html">Dashboard</a></li>
+                    <li><a href="../login.html" id="signInBtn">Login</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>🌿 Welcome to Your Stress-Free Zone</h1>
+        <p>Find peace with guided relaxation, exercises, a meal plan, and soothing music & videos.</p>
+        
+        <div class="section">
+            <h2>🧘‍♂️ Relaxation Techniques</h2>
+            <ul>
+                <li>✅ Deep Breathing – 4-4-4 technique</li>
+                <li>✅ Guided Meditation</li>
+                <li>✅ Yoga Poses</li>
+                <li>✅ Nature Walks</li>
+                <li>✅ Journaling & Gratitude</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>🏋️ Stress-Relieving Exercises</h2>
+            <ul>
+                <li>Morning Stretch Routine (5 mins)</li>
+                <li>Light Cardio (10 mins)</li>
+                <li>Yoga Poses (15 mins)</li>
+                <li>Strength Training (20 mins)</li>
+                <li>Evening Meditation & Stretching (10 mins)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🍎 30-Day Healthy Meal Plan</h2>
+            <a href="MonthlyMealPlan_Brochure_Rev24.pdf" class="btn">📥 Download Meal Plan</a>
+        </div>
+
+        <div class="section">
+            <h2>📅 Daily Routine for a Stress-Free Life</h2>
+            <p>Follow this structured daily routine for a stress-free and balanced life.</p>
+            <h3 style="text-decoration: underline; padding: 5px;">🌞 Morning Routine:</h3>
+            <ul>
+                <li><b>Wake Up:</b> Set a consistent time to wake up each day.</li>
+                <li><b>Hydration:</b> Drink a glass of water.</li>
+                <li><b>Exercise:</b> Do 10-15 minutes of light exercise or stretching.</li>
+                <li><b>Healthy Breakfast:</b> Eat a nutritious meal with fruits, proteins, and whole grains.</li>
+                <li><b>Plan the Day:</b> Spend a few minutes organizing tasks and priorities.</li>
+            </ul>
+            <h3 style="text-decoration: underline; padding: 5px;">🌤️ Daytime Routine:</h3>
+            <ul>
+                <li><b>Work/Study:</b> Focus on productive tasks for 2-3 hours.</li>
+                <li><b>Short Breaks:</b> Take a 5-10 minute break every hour to stretch or walk.</li>
+                <li><b>Lunch:</b> Have a balanced meal with vegetables, lean proteins, and healthy fats.</li>
+                <li><b>Relaxation:</b> Spend 15-20 minutes on a hobby or mindfulness practice.</li>
+            </ul>
+            <h3 style="text-decoration: underline; padding: 5px;">🌙 Evening Routine:</h3>
+            <ul>
+                <li><b>Unwind:</b> Engage in relaxing activities like reading or listening to music.</li>
+                <li><b>Light Dinner:</b> Opt for a light and nutritious meal.</li>
+                <li><b>Reflect:</b> Review the day’s achievements and plan for tomorrow.</li>
+                <li><b>Sleep Preparation:</b> Avoid screens before bed and aim for 7-8 hours of sleep.</li>
+            </ul>
+            <a href="daily schedule.pdf" class="btn">📥 Download Daily Routine PDF</a>
+        </div>
+        
+        <div class="section">
+            <h2>📌 Manage Your Life Efficiently</h2>
+            <p>Use this Notion template to organize and manage your tasks effectively.</p>
+            <a href="https://www.notion.so/That-Girl-1784c8d6bc0e80499799c01f490c84b6" class="btn">🔗 Open Notion Template</a>
+        </div>
+        
+        <div class="section">
+            <h2>🎶 Relaxing Music</h2>
+            <p>🎵 Nature Sounds | 🎵 Lo-Fi & Chill Beats | 🎵 Instrumental Melodies</p>
+            <ul>
+                <li class="Meditation_video">
+                    <a href="#" class="btn" onclick="openMusicModal('Music 01.mp3', event)">▶️ Music 01</a>
+                </li>
+                <li class="Meditation_video">
+                    <a href="#" class="btn" onclick="openMusicModal('Music 02.mp3', event)">▶️ Music 02</a>
+                </li>
+                <li class="Meditation_video">
+                    <a href="#" class="btn" onclick="openMusicModal('Music 03.mp3', event)">▶️ Music 03</a>
+                </li>
+            </ul>
+            
+        </div>
+        
+        <!-- Music Modal -->
+        <div id="musicModal" class="music-modal">
+            <div class="music-modal-content">
+                <span class="music-close-btn" onclick="closeMusicModal()">×</span>
+                <audio id="musicPlayer" class="music-player" controls></audio>
+            </div>
+        </div>
+        
+
+  <!-- Meditation Video Section -->
+<div class="section">
+    <h2>🎥 Meditation Videos</h2>
+    <<ul>
+        <li class="Meditation_video">
+            <a href="#" onclick="showVideo('Let it Rain_HD.mp4', event)">🌧️💙 Rain Bliss (Let It Rain)</a>
+        </li>
+        <li class="Meditation_video">
+            <a href="#" onclick="showVideo('First Snow in the Forest_HD.mp4', event)">❄️🌲 Snowy Serenity (Snow in Forest)</a>
+        </li>
+        <li class="Meditation_video">
+            <a href="#" onclick="showVideo('Majestic Mountains _ A day among the peaks_HD.mp4', event)">🏔️☁️ Majestic Peaks (Majestic Mountain)</a>
+        </li>
+    </ul>
+    
+</div>
+
+<!-- Video Modal -->
+<div id="videoModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeVideo()">&times;</span>
+        <video id="videoPlayer" controls>
+            <source id="videoSource" src="" type="video/mp4">
+        </video>
+    </div>
+</div>
+      
+             <h2>💙 Stay Calm, Stay Happy! 💙</h2>
+        <p>Stress is temporary. Prioritize self-care and come back whenever you need a break! 😊</p>
+    </div>
+
+
+
+    <script>
+        // Toggle Menu
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            menu.classList.toggle("active");
+        }
+      
+        function openMusicModal(musicSrc, event) {
+    event.preventDefault(); // Prevent page refresh
+
+    let modal = document.getElementById("musicModal");
+    let musicPlayer = document.getElementById("musicPlayer");
+
+    musicPlayer.src = musicSrc;
+    modal.style.display = "flex";
+    musicPlayer.play();
+}
+
+function closeMusicModal() {
+    let modal = document.getElementById("musicModal");
+    let musicPlayer = document.getElementById("musicPlayer");
+
+    musicPlayer.pause();
+    musicPlayer.currentTime = 0;
+    modal.style.display = "none";
+}
+
+function showVideo(videoSrc, event) {
+    event.preventDefault(); // Prevent page refresh
+
+    let modal = document.getElementById("videoModal");
+    let videoPlayer = document.getElementById("videoPlayer");
+    let videoSource = document.getElementById("videoSource");
+
+    videoSource.src = videoSrc;
+    videoPlayer.load();
+    modal.style.display = "flex";
+}
+
+function closeVideo() {
+    let modal = document.getElementById("videoModal");
+    let videoPlayer = document.getElementById("videoPlayer");
+
+    videoPlayer.pause();
+    modal.style.display = "none";
+}
+
+    </script>
+    
+</body>
+</html>
